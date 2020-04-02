@@ -120,40 +120,63 @@ namespace Isla_Maths_Solver
 
         public List<Path> Search()
         {
+           return Search(false);
+        }
+
+        public List<Path> Search(bool allowDiagonal)
+        {
             Coords startingPoint = new Coords(0, 0);
             Path path = new Path(_array, _desiredTotal);
             path.AddCoord(startingPoint);
             _paths.Add(path);
-            Move(startingPoint, path);
+            Move(startingPoint, path, allowDiagonal);
             return _paths;
         }
-        private void Move(Coords currentPoint, Path currentPath)
+
+        private void Move(Coords currentPoint, Path currentPath, bool allowDiagonal)
         {
+            if (allowDiagonal)
+            {
+                Path nextDiagPath = new Path(currentPath.DataArray, _desiredTotal);
+                currentPath.Paths.ForEach(path => { nextDiagPath.AddCoord(path); });
+                Coords nextPointDiag = new Coords(currentPoint.X + 1, currentPoint.Y + 1);
+
+                if (nextPointDiag.X + 1 <= _colCount && nextPointDiag.Y + 1 <= _colCount)
+                {
+                    nextDiagPath.AddCoord(nextPointDiag);
+                    if (nextDiagPath.GetSum() <= _desiredTotal)
+                    {
+                        _paths.Add(nextDiagPath);
+                        Move(nextPointDiag, nextDiagPath, allowDiagonal);
+                    }
+                }
+            }
+
             Path nextRightPath = new Path(currentPath.DataArray, _desiredTotal);
             currentPath.Paths.ForEach(path => { nextRightPath.AddCoord(path); });
-
             Coords nextPointRight = new Coords(currentPoint.X + 1, currentPoint.Y);
-            Path nextDownPath = new Path(currentPath.DataArray, _desiredTotal);
-            currentPath.Paths.ForEach(path => { nextDownPath.AddCoord(path); });
-            Coords nextPointDown = new Coords(currentPoint.X, currentPoint.Y + 1);
 
-            if (nextPointRight.X + 1 <= _rowCount)
+            if (nextPointRight.X + 1 <= _rowCount && nextPointRight.Y <= _rowCount)
             {
                 nextRightPath.AddCoord(nextPointRight);
                 if (nextRightPath.GetSum() <= _desiredTotal)
                 {
                     _paths.Add(nextRightPath);
-                    Move(nextPointRight, nextRightPath);
+                    Move(nextPointRight, nextRightPath, allowDiagonal);
                 }
             }
 
-            if (nextPointDown.Y + 1 <= _colCount)
+            Path nextDownPath = new Path(currentPath.DataArray, _desiredTotal);
+            currentPath.Paths.ForEach(path => { nextDownPath.AddCoord(path); });
+            Coords nextPointDown = new Coords(currentPoint.X, currentPoint.Y + 1);
+
+            if (nextPointDown.Y + 1 <= _colCount && nextPointDown.X <= _colCount)
             {
                 nextDownPath.AddCoord(nextPointDown);
                 if (nextDownPath.GetSum() <= _desiredTotal)
                 {
                     _paths.Add(nextDownPath);
-                    Move(nextPointDown, nextDownPath);
+                    Move(nextPointDown, nextDownPath, allowDiagonal);
                 }
             }
         }

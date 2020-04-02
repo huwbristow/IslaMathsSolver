@@ -92,6 +92,36 @@ namespace Maths_Solver_Unit_Tests
         [TestMethod]
         public void CheckPathsOnActualProblem()
         {
+            double[,] array = GetArray();
+            GridSearcher gs = new GridSearcher(array, 1);
+            List<Path> paths = gs.Search();
+            Assert.IsNotNull(paths);
+            Assert.AreEqual(1, paths.FindAll(item => item.IsValidPath()).Count);
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 0), Value: 0.005, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (4, 4), Value: 0.015, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (6, 7), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[0].ToString());
+        }
+
+        [TestMethod]
+        public void CheckPathsOnActualProblemIncludingDiagonals()
+        {
+            double[,] array = GetArray();
+            GridSearcher gs = new GridSearcher(array, 1);
+            List<Path> paths = gs.Search(true);
+            Assert.IsNotNull(paths);
+            Assert.AreEqual(10, paths.FindAll(item => item.IsValidPath()).Count);
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (7, 6), Value: 0.04, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[0].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (5, 3), Value: 0.03, Coords: (5, 4), Value: 0.199, Coords: (6, 5), Value: 0.08, Coords: (7, 6), Value: 0.04, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[1].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (5, 3), Value: 0.03, Coords: (5, 4), Value: 0.199, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (6, 7), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[2].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 0), Value: 0.005, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (4, 4), Value: 0.015, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (7, 6), Value: 0.04, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[3].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 0), Value: 0.005, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (4, 4), Value: 0.015, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (6, 7), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[4].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (1, 1), Value: 0.06, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (5, 3), Value: 0.03, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (7, 6), Value: 0.04, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[5].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (1, 1), Value: 0.06, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (7, 6), Value: 0.04, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[6].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (1, 1), Value: 0.06, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (6, 7), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[7].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (1, 1), Value: 0.06, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (5, 3), Value: 0.03, Coords: (5, 4), Value: 0.199, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[8].ToString());
+            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (1, 1), Value: 0.06, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (5, 3), Value: 0.03, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[9].ToString());
+        }
+
+        private double[,] GetArray()
+        {
             double[,] array = new double[8, 8];
             array[0, 0] = 0.02;
             array[0, 1] = 0.01;
@@ -164,12 +194,7 @@ namespace Maths_Solver_Unit_Tests
             array[7, 5] = 0.003;
             array[7, 6] = 0.04;
             array[7, 7] = 0.09;
-
-            GridSearcher gs = new GridSearcher(array, 1);
-            List<Path> paths = gs.Search();
-            Assert.IsNotNull(paths);
-            Assert.AreEqual(1, paths.FindAll(item => item.IsValidPath()).Count);
-            Assert.AreEqual("Coords: (0, 0), Value: 0.02, Coords: (1, 0), Value: 0.2, Coords: (2, 0), Value: 0.005, Coords: (2, 1), Value: 0.04, Coords: (2, 2), Value: 0.2, Coords: (3, 2), Value: 0.05, Coords: (4, 2), Value: 0.001, Coords: (4, 3), Value: 0.05, Coords: (4, 4), Value: 0.015, Coords: (5, 4), Value: 0.199, Coords: (5, 5), Value: 0.01, Coords: (6, 5), Value: 0.08, Coords: (6, 6), Value: 0.02, Coords: (6, 7), Value: 0.02, Coords: (7, 7), Value: 0.09, Sum: 1", paths.FindAll(item => item.IsValidPath())[0].ToString());
+            return array;
         }
     }
 }
